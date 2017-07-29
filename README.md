@@ -4,8 +4,8 @@ This is the final project of EECS 461 in University of Michigan. The goal of the
 
 [//]: # (Image References)
 
-[image1]: ./picture/autosteering.jpg "Autosteering"
-[image2]: ./picture/ACC.jpg "ACC"
+[image1]: ./picture/autosteering.png "Autosteering"
+[image2]: ./picture/ACC.png "ACC"
 
 
 
