@@ -6,7 +6,8 @@ This is the final project of EECS 461 in University of Michigan. The goal of the
 
 [image1]: ./picture/autosteering.png "Autosteering"
 [image2]: ./picture/ACC.png "ACC"
-[image3]: ./picture/ACC_formulate.png "ACC"
+[image3]: ./picture/acc_formulate.png "formulate"
+[image4]: ./picture/CAN.png "CAN"
 
 
 
@@ -46,7 +47,7 @@ There are three modes of operation for the ACC system. If the system is deactiva
 under manual control, with the potentiometer functioning as a \gas" pedal. When ACC is turned on, there
 are two modes of operation: there is a \speed control" mode that maintains the vehicle at the desired velocity
 unless another vehicle is too close, in which case a \position control" mode is implemented that keeps the
-vehicle a xed distance from the car immediately in front.
+vehicle aixed distance from the car immediately in front.
 The ACC system is actually two controllers with some logic that selects one of the two controllers or selects
 manual control if the system is deactivated. The switching logic needs to know the s coordinate of the lead
 vehicle, so you must create a subsystem that takes the s coordinates from all the other vehicles, compares
@@ -67,4 +68,26 @@ ow diagram or an \enabled subsystem," which only runs if the
 enable signal is 1. The three possible subsystems all produce a force Fd to drive the vehicle's front wheel.
 Use a Simulink \merge" block to select the output of the one enabled subsystem.
 
+CAN Communication
 
+In an actual ACC system, radar would be used to measure relative location and velocity of traffic in front
+of the vehicle. In this lab, we will replace radar information with communication between vehicle models by
+using the CAN network. Each computer on the CAN network will periodically transmit 4 values (32-bits
+each) onto the network. The ACC systems need the speed along the centerline us (see Section 4) and the
+s-coordinate of all the other vehicles. The graphics software needs x, y and delta  for each vehicle, where x and
+y can be found from s and n. To provide these values s, n, us, and delta , each lab station must transmit 2
+64-bit Messages (with two 32-bit values per message). Also, the format of these messages must be standard
+so that everyone can understand each others messages, so the following format must be used.
+
+![alt text][image4]
+
+* Message 1, Bytes 1-4: s as a float
+* Message 1, Bytes 5-8: n as a float
+* Message 2, Bytes 1-4: us as a float
+* Message 2, Bytes 5-8: delta as a float in radians
+
+To form the CAN messages, use the \Single-to-Bytes" block to create two 4-byte arrays and then mux them
+into the port data of the CAN transmit block. When receiving CAN messages, they can be unpacked by an
+inverse operation. The data can be demuxed into an array of 8-bytes and then the upper and lower bytes are
+muxed into 4-byte arrays and passed to the \Bytes-to-Single" block to reconstruct the 
+oating-point value.
