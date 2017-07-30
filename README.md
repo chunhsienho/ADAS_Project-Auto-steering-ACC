@@ -22,7 +22,7 @@ There are six file you would have in this project
 * parameters.m: MATLAB script to set model parameters
 * Final project TEMPLATE.slx: Template Simulink model for the Project
 * controllers.slx: Contains a position and a speed controller
-* rappid 564xl user copy required les.m: place in the same folder as the main project Simulink file.
+* rappid_564xl_user_copy_required_files.m: place in the same folder as the main project Simulink file.
 * Demo.mp4: show the result of ACC and auto-steering
 
 
